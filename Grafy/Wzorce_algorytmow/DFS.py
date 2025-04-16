@@ -17,7 +17,6 @@ def DFS_visit(G, v):
 
 def DFS(G):
     global visited
-    global parent
     for v in range(len(G)):
         if(visited[v] == False):
             DFS_visit(G, v)
