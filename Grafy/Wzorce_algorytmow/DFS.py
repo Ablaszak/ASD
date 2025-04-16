@@ -1,18 +1,17 @@
-# Podstawowy, "goły" DFS do modyfikowania na potrzeby zadań
+# Basic, "naked" DFS algorithm, base for more complicated functions
 
 def DFS_visit(G, v):
     global parent
     global visited
     global time
     visited[v] = True
-    time += 1 # Czas odwiedzenia
-    # Odwiedzanie sąsiadów:
-
+    time += 1 # Visit time
+    # Visiting neighbours:
     for n in G[v]:
         if(visited[n] == False):
             parent[n] = v
             DFS_visit(G, n)
-    time += 1 # czas przetworzenia
+    time += 1 # Process time
 
 
 def DFS(G):
@@ -21,7 +20,7 @@ def DFS(G):
         if(visited[v] == False):
             DFS_visit(G, v)
 
-# Graf skierowany:
+# Directed graph:
 adj = [
     [1, 2],
     [8],
