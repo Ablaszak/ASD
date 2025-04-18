@@ -5,6 +5,7 @@ def DFS_visit(G, v):
     global parent
     global V
     global it
+    ver = v # To keep the actual vertex id
 
     # Deleting parent edge before processing given vertex:
     if(parent[v] is not None):
@@ -18,13 +19,13 @@ def DFS_visit(G, v):
                 break
 
     # Visiting neighbours:
-    for n in range(len(G[v])):
-        if(G[v][n] is not None):
+    for n in G[v]:
+        if(n is not None):
             parent[n] = v
             DFS_visit(G, n)
 
     # Adding v to output array:
-    V[it] = v
+    V[it] = ver
     it -= 1
 
 
@@ -47,7 +48,7 @@ E = 0
 for i in range(n):
     E += len(adj[i])
 
-V = [None for _ in range(E)] # Output array
+V = [None for _ in range(E//2)] # Output array
 it = (E//2)-1 # V iterator
 DFS_visit(adj, 0)
 print(V)
