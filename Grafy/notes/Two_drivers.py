@@ -11,5 +11,6 @@ We can search for paths, but we have to count two things:
 
     In the end we choose which length we prefer (shorter one)
 
-
+Better:
+Each city has two vertexes (doubles), one is for #1 entering city, second vertex is for #2"
 """
