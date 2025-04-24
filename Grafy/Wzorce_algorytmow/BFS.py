@@ -1,6 +1,4 @@
-"""
-Simple BFS, storing parents and distances from the vertex globally
-"""
+#Simple BFS, storing parents and distances from the vertex globally
 
 from collections import deque
 
@@ -25,11 +23,7 @@ def BFS(adj, s=0):
                 put(n)
 
 
-
-
 # Assuming an undirected graph
-# Number of vertices:
-#v = 5
 
 # Adjacency list:
 adj = [[1, 3, 4], [0, 2, 3], [1], [0, 1, 4], [0, 3]]
@@ -55,10 +49,3 @@ print(v, end="")
 while(v != 0):
     v = parent[v]
     print(" <-- ", v, end="")
-
-"""
-q = deque()
-put = q.append
-get = q.popleft
-put(123)
-"""
