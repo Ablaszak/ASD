@@ -12,19 +12,20 @@ def djiktra(G, s):
         neighbour = -1
         d_nei = float("inf")
         for i in range(n):
-            if(d[i] < j):
+            # Looking for least remote, not visited vertex:
+            if(d[i] < d_nei and visited[i] == False):
                 d_nei = d[i]
                 neighbour = i
         if(neighbour == -1):
-            return parent[s]
+            return True
         # Now we know that the vertex exists
         visited[neighbour] = True
 
-        # Relaxation:
-        for i in range(n):
-            if(G[neighbour][i] is not None):
-                if(d[i] > d[neighbour] + G[neighbour][i])
-                    parent[i] = u
-                    d[i] = d[neighbour] + G[neighbour][i]
+        # Relaxation for neighbour:
+        for v in range(n):
+            if(G[neighbour][v] is not None):
+                if(d[v] > d[neighbour] + G[neighbour][v]):
+                    parent[v] = v
+                    d[v] = d[neighbour] + G[neighbour][v]
 
 
