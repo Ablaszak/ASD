@@ -1,6 +1,3 @@
-def relaxation(G, u, v):
-
-
 def djiktra(G, s):
     # Initialization:
     n = len(G)
