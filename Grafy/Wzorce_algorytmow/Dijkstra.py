@@ -1,6 +1,6 @@
 from queue import PriorityQueue
 
-def dijkstra(G, s=0):
+def dijkstra(G, s, end):
     # Initialization:
     n = len(G)
     parent = [None for _ in range(n)]
@@ -32,6 +32,8 @@ def dijkstra(G, s=0):
     # Faster version:
     while(not pq.empty()):
         prio, vertex = pq.get()
+        if(vertex == end):
+            return parent
         if(prio <= d[vertex]): # We check the vertex only if we haven't already found a better path
             visited[vertex] = True
             # Relaxation for the newly found vertex:
@@ -40,7 +42,7 @@ def dijkstra(G, s=0):
                     d[v] = d[vertex] + length
                     parent[v] = vertex
                     pq.put((d[v], v))
-    return parent
+    return None
 
 inf = float("inf")
 G=[
@@ -54,7 +56,7 @@ G=[
 
 start = 0
 end = 5
-path = dijkstra(G, start)
+path = dijkstra(G, start, end)
 
 while(end != start):
     print(end, end=" <--- ")
