@@ -10,6 +10,7 @@ def BFS(adj, s=0):
     global visited
     global parent
     global d
+    visited[s] = True
     while q:
         v = get()
         # Exploring neighboring vertices:
