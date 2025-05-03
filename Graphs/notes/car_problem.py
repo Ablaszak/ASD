@@ -30,19 +30,21 @@ def dijkstra(G, s, end):
     d[s] = 0 # <--- Very important, without this the algorithm won't start
     visited = [False for _ in range(n)]
     pq = PriorityQueue()
-    pq.put((d[s], s))
+    pq.put((0, s, D, [s])) # Path_length, vertex, Fuel_on_entry, path
 
     # Main loop:
     while(not pq.empty()):
-        prio, vertex = pq.get()
+        prio, vertex, incom, path = pq.get()
         if(vertex == end):
             return parent
-        if(prio <= d[vertex]): # We check the vertex only if we haven't already found a better path
-            visited[vertex] = True
-            # Relaxation for the newly found vertex:
-            for (v, length) in G[vertex]:
-                if(d[v] > d[vertex] + length and visited[v] == False):
-                    d[v] = d[vertex] + length
-                    parent[v] = vertex
-                    pq.put((d[v], v))
+        # Relaxation for the newly found vertex:
+        for (v, length) in G[vertex]:
+            if(length > incom):
+                continue # we cannot go this way
+            # Now we actually check adjacent vertex:
+            if(Stations[v] == True):
+                pq.put((prio + length, v, D, path+[v]))
+            else:
+                pq.put((prio + length, v, (incom-length), path + [v]))
     return None
+
