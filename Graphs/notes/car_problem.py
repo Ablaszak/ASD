@@ -36,7 +36,7 @@ def dijkstra(G, s, end):
     while(not pq.empty()):
         prio, vertex, incom, path = pq.get()
         if(vertex == end):
-            return parent
+            return path
         # Relaxation for the newly found vertex:
         for (v, length) in G[vertex]:
             if(length > incom):
@@ -48,3 +48,4 @@ def dijkstra(G, s, end):
                 pq.put((prio + length, v, (incom-length), path + [v]))
     return None
 
+print(dijkstra(G, 0, 9))
