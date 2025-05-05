@@ -11,25 +11,6 @@ def dijkstra(G, s, end):
     pq.put((d[s], s))
 
     # Main loop:
-
-
-    """ Slower version:
-    while(True):
-        vertex = -1
-        nearest = float("inf")
-        for i in range(n):
-            # Looking for nearest to s, not yet visited vertex:
-            if(d[i] < nearest and visited[i] == False):
-                nearest = d[i]
-                vertex = i    
-                
-        if(vertex == -1):
-            return parent # Because there are no more vertexes to
-        # Now we know that the vertex exists and we can visit it
-        visited[vertex] = True
-    """
-
-    # Faster version:
     while(not pq.empty()):
         prio, vertex = pq.get()
         if(vertex == end):
