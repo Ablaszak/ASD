@@ -1,4 +1,6 @@
-
+"""
+Works for negative edges
+"""
 def B_F(G, s):
 
     # Initialization:
