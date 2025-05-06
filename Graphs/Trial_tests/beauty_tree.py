@@ -1,3 +1,15 @@
+"""
+Dany jest ważony, nieskierowany graf G = (V, E), którego wagi krawędzi opisuje funkcja w∶ E → N.
+Wiadomo, że wagi krawędzi są parami różne. Niech T będzie pewnym drzewem rozpinającym G,
+m będzie najmniejszą wagą krawędzi z T a M będzie największą wagą krawędzi z T. Mówimy, że
+T jest piękne jeśli każda krawędź spoza T albo ma wagę mniejszą niż m albo większą niż M. Wagą
+drzewa rozpinającego jest suma wag jego krawędzi. Zadanie polega na implementacji funkcji:
+beautree( G )
+która na wejściu otrzymuje graf reprezentowany w postaci listowej i zwraca wagę najlżejszego pięknego drzewa rozpinającego G lub None jeśli takie drzewo nie istnieje. Użyty algorytm powinien być
+możliwie jak najszybszy. Proszę uzasadnić poprawność zaproponowanego algorytmu oraz oszacować
+jego złożoność czasową i pamięciową.
+"""
+
 def rewrite(G):
     E = []
     n = len(G)
@@ -26,24 +38,12 @@ def union(x, y, parent, rank):
         if(rank[x] == rank[y]):
             rank[x] += 1
 
-def MST(E, n):
-
-    # Initialization:
-    A = [] # Subset of edges
-    parent = [v for v in range(n)] # Not a graph parent, but MSC parent
-    rank= [0 for _ in range(n)]
-
-    # Main loop:
-    for w, v, u in E:
-        if(find(v, parent) != find(u, parent)): # It means adding the e edge to A will not create a cycle
-            union(v, u, parent, rank)
-            A.append((v, u))
-    return A
-
 def beautree(G):
     V = len(G)
     G = rewrite(G)
     E = len(G)
+    if(E < V-1):
+        return None
     for i in range(E - (V)):
         skip = False
         W = 0
