@@ -56,7 +56,7 @@ def dijkstra(A, C):
     # Expand lists:
     for s in range(0, n): # Start
         for e in range(s+1, n): # End
-            G[s].append((C[e], e, A[e]))
+            G[s].append((C[e-s], e, A[e]))
 
     # Initialization:
     parent = [None for _ in range(n)]
@@ -75,14 +75,14 @@ def dijkstra(A, C):
         if(prio <= d[vertex]): # We check the vertex only if we haven't already found a better path
             visited[vertex] = True
             # Relaxation for the newly found vertex:
-            for (v, length, edible) in G[vertex]:
-                if(d[v] > d[vertex] + length and visited[v] == False and energy >= C[v - vertex]):
+            for (length, v, edible) in G[vertex]:
+                if(d[v] > d[vertex] + length and visited[v] == False and energy >= length):
                     d[v] = d[vertex] + length
                     parent[v] = vertex
                     pq.put((d[v], v, energy-length+edible))
     return None
 
-C = [0,5,5,2,78,1,2]
+C = [0,5,5,2,78,100,20]
 A = [5,5,0,10,0,5,0]
 
 print(dijkstra(A, C))
