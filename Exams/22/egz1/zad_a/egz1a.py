@@ -9,4 +9,4 @@ def snow( S ):
         d += 1
     return w
 
-runtests( snow, all_tests = False )
+runtests( snow, all_tests = True )
