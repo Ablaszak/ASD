@@ -1,3 +1,14 @@
+"""
+Cweloinatus rex
+Złożoność: o(n^n!)
+Uzasadnienie złożoności:
+Bo widać
+Uzasadnienie poprawności:
+Wykorzystanie algorytmu bogo sort
+UwU
+
+"""
+
 def find_substrings(a, b):
     # Init:
     lena = len(a)
