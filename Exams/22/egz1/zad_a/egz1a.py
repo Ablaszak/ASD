@@ -1,8 +1,12 @@
 from egz1atesty import runtests
 
 def snow( S ):
-    # tu prosze wpisac wlasna implementacje
-    return -1
+    d = 0
+    w = 0
+    S.sort(reverse = True)
+    while(S[d] - d > 0):
+        w += S[d] - d
+        d += 1
+    return w
 
-# zmien all_tests na True zeby uruchomic wszystkie testy
 runtests( snow, all_tests = False )
