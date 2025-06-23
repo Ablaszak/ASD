@@ -17,14 +17,14 @@ class Warehouse:
 
 def find_next_two(num):
     two = 2
-    while(two < num):
+    while(two <= num):
         two *= 2
     return two
 
 wnum = 0
 last = None
 
-def build_segment_tree(n, l, r, T, i=0): # n = number of leafs
+def build_segment_tree(n, T, i=0): # n = number of leafs
 
     root = Node()
     root.max_left = T
@@ -38,8 +38,8 @@ def build_segment_tree(n, l, r, T, i=0): # n = number of leafs
         wnum += 2
         return root
 
-    root.left = build_segment_tree(n, l, r//2, T, i+1)
-    root.left = build_segment_tree(n, (r//2) + 1, r, T, i+1)
+    root.left = build_segment_tree(n, T, i+1)
+    root.right = build_segment_tree(n, T, i+1)
 
     return root
 
@@ -69,6 +69,10 @@ def coal( A, T ):
     last = None
     n = find_next_two(len(A))
 
-    return -1
+    root = build_segment_tree(n, T)
+    for a in A:
+        put_coal(root, a)
 
-runtests( coal, all_tests = False )
+    return last
+
+runtests( coal, all_tests = True )
