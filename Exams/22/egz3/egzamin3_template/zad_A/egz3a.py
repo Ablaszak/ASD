@@ -31,7 +31,8 @@ def get_points(n, I):
         if(present[i]):
             q.append(i)
 
-def build_tree(n, it=0):
+# O(n log n)
+def build_tree(n, it=0, tree_size=1):
     """
     Firstly we build left subtree
     Then give current node a value
@@ -46,7 +47,7 @@ def build_tree(n, it=0):
         return None
 
     # Pretty ending:
-    if(2 ** (it + 1) >= n):
+    if( tree_size >= n):
         return Node(q.popleft())
 
     # Normal work:
@@ -55,36 +56,57 @@ def build_tree(n, it=0):
     root = Node(None)
 
     #Build left side:
-    root.left = build_tree(n, it+1)
+    root.left = build_tree(n, it+1, tree_size + 2**it)
 
     # Make root a valid node:
     root.val = q.popleft()
 
     # Build right side:
-    root.right = build_tree(n, it)
+    root.right = build_tree(n, it, tree_size + 2**it)
 
     return root
 
+# O(log n)
 def let_it_snow(root, left, right):
     if(left <= root.val <= right):
-        root.val += 1
+        root.mm += 1
 
     if(left <= root.val and root.left is not None):
         let_it_snow(root.left, left, min(root.val, right))
     if(right >= root.val and root.right is not None):
         let_it_snow(root.right, max(root.val, left), right)
 
+max_snow = 0
+def find_max(root):
+
+    if(root is None):
+        return
+
+    global max_snow
+    max_snow = max(max_snow, root.mm)
+
+    find_max(root.left)
+    find_max(root.right)
 
 def snow( T, I ):
+
     get_points(T, I)
 
     # We have to expand queue to be 2^x long
     global q
-    n = find_next_two(T) - T
-    for _ in range(n):
-        q.append(T)
+    points = len(q)
+    n = find_next_two(points)
+    for _ in range(n-points):
+        q.append(T) # Fake value, nodes will never be used
 
-    return 0
+    root = build_tree(n)
+    for l, r in I:
+        let_it_snow(root, l, r)
 
-#runtests( snow, all_tests = False )
+    global max_snow
+    max_snow = 0
+    find_max(root)
 
+    return max_snow
+
+runtests( snow, all_tests = False )
