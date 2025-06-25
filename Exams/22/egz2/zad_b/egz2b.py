@@ -1,11 +1,18 @@
 from egz2btesty import runtests
 
 def gain(chest, d):
-    if(chest == d[0]):
-        return 0
     if(chest < d[0]):
         return chest-d[0]
     return min(chest-d[0], 10)
+
+def openable(door, pocket, chest):
+    if(door[1] == -1): # Door leads to nowhere
+        return False
+    if(door[0] < chest-10): # There is too much gold in the chest
+        return False
+    if(chest + pocket < door[0]): # We don't have enough gold
+        return False
+    return True
 
 def magic( C ):
 
@@ -22,9 +29,8 @@ def magic( C ):
 
         # Try all doors:
         for i in range(3):
-            if(d[i][1] != -1 and chest-10 <= d[i][0]): # door are openable
-                if(d[i][0] <= chest+max_gold[current]): # we have enough gold to open door
-                    max_gold[d[i][1]] = max(max_gold[d[i][1]], max_gold[current]+gain(chest, d[i]))
+            if(openable(d[i], max_gold[current], chest)):
+                max_gold[d[i][1]] = max(max_gold[d[i][1]], max_gold[current]+gain(chest, d[i]))
 
     return max_gold[n-1]
 
