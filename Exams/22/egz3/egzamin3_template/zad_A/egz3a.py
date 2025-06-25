@@ -12,7 +12,7 @@ q = deque()
 
 def find_next_two(num):
     two = 2
-    while(two <= num):
+    while(two < num):
         two *= 2
     return two
 
@@ -58,11 +58,13 @@ def build_tree(n, it=0, tree_size=1):
     #Build left side:
     root.left = build_tree(n, it+1, tree_size + 2**it)
 
-    # Make root a valid node:
-    root.val = q.popleft()
-
-    # Build right side:
-    root.right = build_tree(n, it, tree_size + 2**it)
+    if(q):
+        # Make root a valid node:
+        root.val = q.popleft()
+        # Build right side:
+        root.right = build_tree(n, it, tree_size + 2**it)
+    else:
+        root.val = float("inf")
 
     return root
 
@@ -91,22 +93,25 @@ def find_max(root):
 def snow( T, I ):
 
     get_points(T, I)
-
+    print("get_points()")
     # We have to expand queue to be 2^x long
     global q
     points = len(q)
     n = find_next_two(points)
-    for _ in range(n-points):
-        q.append(T) # Fake value, nodes will never be used
-
+    #for _ in range(n-points):
+    #    q.append(T) # Fake value, nodes will never be used
     root = build_tree(n)
+    print("build_tree()")
     for l, r in I:
         let_it_snow(root, l, r)
+
+    print("made_it_snow()")
 
     global max_snow
     max_snow = 0
     find_max(root)
+    print("found max()")
 
     return max_snow
 
-runtests( snow, all_tests = False )
+runtests( snow, all_tests = True )
