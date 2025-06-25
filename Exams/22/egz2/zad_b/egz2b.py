@@ -28,4 +28,5 @@ def magic( C ):
 
     return max_gold[n-1]
 
+
 runtests( magic, all_tests = True )
