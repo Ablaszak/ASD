@@ -25,7 +25,6 @@ def magic( C ):
     for current in range(n-1):
         chest, d0, d1, d2 = C[current]
         d = [d0,d1,d2]
-        take = min(chest, 10)
 
         # Try all doors:
         for i in range(3):
