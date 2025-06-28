@@ -29,67 +29,50 @@ from queue import PriorityQueue
 def dijkstra(G, s, end):
     # Initialization:
     n = len(G)
-    df = [float("inf") for _ in range(n)]
-    db = [float("inf") for _ in range(n)]
-    df[s] = 0 # <--- Very important, without this the algorithm won't start
-
+    d = [float("inf") for _ in range(n)]
+    d[s] = 0
     pq = PriorityQueue()
-    pq.put((df[s], s, 1))
-    if(G[s][2] is not None): # start with a bike
-        db[s] = 0
-        pq.put(db[s], s, G[s][2])
+    pq.put((d[s], s))
 
     # Main loop:
     while(not pq.empty()):
-        prio, vertex, bike_mod = pq.get()
-        if(vertex == end):
-            return int(prio)
-        
-        # We dont have a bike:
-        if(bike_mod == 1 and prio <= df[vertex]): # We check the vertex only if we haven't already found a better path
-            # Go further on foot:
-            for (v, length, bike) in G[vertex]:
-                if(df[v] > prio + length):
-                    df[v] = prio + length
-                    pq.put((df[v], v, 1))
-            # Try taking a bike:
-            if(G[vertex][2] is not None):
-                pq.put((prio, vertex, G[vertex][2]))
-        
-        # Or we do have a bike:
-        elif(prio <= db[vertex]):
-            for(v, length, bike) in G[vertex]:
-                length *= bike_mod
-                if(db[v] > prio + length):
-                    db[v] = prio + length
-                    pq.put(db[v], v, bike_mod)
-            
-    return None
+        prio, vertex = pq.get()
+        if(prio <= d[vertex]): # We check the vertex only if we haven't already found a better path
+            # Relaxation for the newly found vertex:
+            for (v, length) in G[vertex]:
+                if(d[v] > d[vertex] + length):
+                    d[v] = d[vertex] + length
+                    pq.put((d[v], v))
+    return d
 
 # O(n)
 def build_graph(G, B):
     n = 0
     for u, v, _ in G:
         n = max(n, u, v)
+    n += 1
     
     graph = [[] for _ in range(n)]
     for u, v, w in G: # O(n)
-        graph[u].append([v, w, None]) # Last field is for bike
-        graph[v].append([u, w, None])
+        graph[u].append([v, w]) # Last field is for bike
+        graph[v].append([u, w])
     
-    # Add bikes:
-    for i, p ,q in B: # O(len(B)) ~ O(n)
-        if(p/q >= 1): # useless bike
-            continue
+    # Choose the best bike for every vertex:
+    best_B = [1 for _ in range(n)]
+    for i, p, q in B:
+        best_B[i] = min(best_B[i], p/q)
         
-        if(graph[i][2] is None): # there is no bike
-            graph[i][2] = p/q
-        elif(p/q < graph[i][2]): # choose better bike
-            graph[i][2] = p/q
-        
-    return graph
+    return graph, best_B
     
 def armstrong(B, G, s, t):
-    return dijkstra(build_graph(G, B), s, t)
+    G, B = build_graph(G, B)
+    n = len(G)
+    df = dijkstra(G, s, t)
+    db = dijkstra(G, t, s)
+    best = float("inf")
+    for v in range(n):
+        best = min(best, df[v] + (db[v] * B[v]))
+        
+    return int(best)
 
-runtests( armstrong, all_tests = False )
+runtests( armstrong, all_tests = True )
