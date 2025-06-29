@@ -3,10 +3,8 @@ from queue import PriorityQueue
 def dijkstra(G, s, end):
     # Initialization:
     n = len(G)
-    parent = [None for _ in range(n)]
     d = [float("inf") for _ in range(n)]
     d[s] = 0 # <--- Very important, without this the algorithm won't start
-    visited = [False for _ in range(n)]
     pq = PriorityQueue()
     pq.put((d[s], s))
 
@@ -14,14 +12,12 @@ def dijkstra(G, s, end):
     while(not pq.empty()):
         prio, vertex = pq.get()
         if(vertex == end):
-            return parent
+            return prio
         if(prio <= d[vertex]): # We check the vertex only if we haven't already found a better path
-            visited[vertex] = True
             # Relaxation for the newly found vertex:
             for (v, length) in G[vertex]:
-                if(d[v] > d[vertex] + length and visited[v] == False):
+                if(d[v] > d[vertex] + length):
                     d[v] = d[vertex] + length
-                    parent[v] = vertex
                     pq.put((d[v], v))
     return None
 
